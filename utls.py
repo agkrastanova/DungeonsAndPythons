@@ -34,8 +34,8 @@ class Mixin:
     def equip(self, weapon):
         self.weapon = weapon
 
-    def learn(spell):
-        pass
+    def learn(self, spell):
+        self.spell = spell
 
 class Weapon:
     pass
