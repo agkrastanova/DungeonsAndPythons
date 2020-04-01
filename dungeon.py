@@ -1,4 +1,4 @@
-from utls import Mixin
+from utls import Mixin, Weapon, Spell
 
 class Hero(Mixin):
 	pass

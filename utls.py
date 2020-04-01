@@ -28,3 +28,9 @@ class Mixin:
 
     def learn(spell):
         pass
+
+class Weapon:
+    pass
+
+class Spell:
+    pass
