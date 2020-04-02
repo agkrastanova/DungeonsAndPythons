@@ -1,4 +1,5 @@
 class Mixin:
+    
     def get_health(self):
         return self.health
 
@@ -35,7 +36,18 @@ class Mixin:
         pass
 
 class Weapon:
-    pass
+
+    def __init__(self, name, damage):
+        self.name = name
+        self.damage = damage
 
 class Spell:
-    pass
+
+    def __init__(self, name, damage, mana_cost, cast_range):
+        self.name = name
+        self.damage = damage
+        self.mana_cost = mana_cost
+        self.cast_range = cast_range
+
+if __name__ == '__main__':
+    main()
