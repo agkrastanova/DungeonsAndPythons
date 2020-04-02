@@ -34,3 +34,7 @@ class Weapon:
 
 class Spell:
     pass
+
+
+if __name__ == '__main__':
+    main()

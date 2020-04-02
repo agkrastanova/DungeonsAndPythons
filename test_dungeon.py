@@ -6,7 +6,6 @@ from dungeon import Hero, Enemy
 class TestHeroClass(unittest.TestCase):
     pass
 
-
 class TestEnemyClass(unittest.TestCase):
     pass
 
