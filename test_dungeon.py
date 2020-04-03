@@ -151,5 +151,6 @@ class TestEnemyClass(unittest.TestCase):
         self.assertEqual(str(exc), 'Damage should be positive integer')
 
 
+
 if __name__ == '__main__':
     unittest.main()
