@@ -4,13 +4,124 @@ from utls import Mixin, Weapon, Spell
 from dungeon import Hero, Enemy
 
 class TestMixinClass(unittest.TestCase):
-    pass
+    
+    def test_get_health_function_should_return_current_health(self):
+
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        result = Mixin.get_health(h)
+
+        self.assertEqual(result, 100)
+
+    def test_is_alive_function_returns_true_if_get_health_is_not_zero(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        result = Mixin.is_alive(h)
+
+        self.assertTrue(result)
+
+
+    def test_can_cast_function_should_return_true_if_object_can_cast(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        result = Mixin.can_cast(h)
+
+        self.assertTrue(result)
+
+    def test_take_damage_should_reduce_health_with_damage_points(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        reduced_health = Mixin.take_damage(h,65)
+
+        self.assertEqual(reduced_health, 35)
+
+        reduced_health2 = Mixin.take_damage(h,50)
+
+        self.assertEqual(reduced_health2, 0)
+
+        health = Mixin.get_health(h)
+
+        self.assertEqual(health, 0)
+
+    def test_get_mana_should_return_current_mana(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        mana = Mixin.get_mana(h)
+
+        self.assertEqual(mana, 100)
+
 
 class TestWeaponClass(unittest.TestCase):
-    pass
+    
+    def test_instantiating_weapon_wrong_type_name_should_raise_error(self):
+        exc = None
+
+        try:
+            Weapon(name = 123, damage= 20)
+        except Exception as err:
+            exc = err
+
+        self.assertIsNotNone(exc)
+        self.assertEqual(str(exc), 'Name should be string')
+
+    def test_instantiating_weapon_with_wrong_damage_value_should_raise_error(self):
+
+        exc = None
+
+        try:
+            Weapon(name='Axe', damage = -20)
+        except Exception as err:
+            exc = err
+
+        self.assertIsNotNone(exc)
+        self.assertEqual(str(exc), 'Damage should be positive integer')
+
 
 class TestSpellClass(unittest.TestCase):
-    pass
+    
+    def test_instantiating_spell_with_wrong_type_name_should_raise_error(self):
+        exc = None
+
+        try:
+            Spell(name = 123, damage= 20, mana_cost=20, cast_range=2)
+        except Exception as err:
+            exc = err
+
+        self.assertIsNotNone(exc)
+        self.assertEqual(str(exc), 'Name should be string')
+
+    def test_instantiating_spell_with_wrong_damage_value_should_raise_error(self):
+        exc = None
+
+        try:
+            Spell(name = 'Fireball', damage=-20, mana_cost=20, cast_range=2)
+        except Exception as err:
+            exc = err
+
+        self.assertIsNotNone(exc)
+        self.assertEqual(str(exc), 'Damage should be positive integer')
+
+    def test_instantiating_spell_with_wrong_mana_cost_value_should_raise_error(self):
+        exc = None
+
+        try:
+            Spell(name = 'Fireball', damage=20, mana_cost=-20, cast_range=2)
+        except Exception as err:
+            exc = err
+
+        self.assertIsNotNone(exc)
+        self.assertEqual(str(exc), 'Mana_cost should be positive integer')
+
+    def test_instantiating_spell_with_wrong_cast_range_value_should_raise_error(self):
+        exc = None
+
+        try:
+            Spell(name = 'Fireball', damage=20, mana_cost=20, cast_range='a')
+        except Exception as err:
+            exc = err
+
+        self.assertIsNotNone(exc)
+        self.assertEqual(str(exc), 'Cast_range should be positive integer')
 
 
 if __name__ == '__main__':
