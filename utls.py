@@ -36,8 +36,19 @@ class Mixin:
         elif self.mana < 0:
             self.mana = 0
 
-    def attack(by):
-        pass
+    def attack(self, by):
+        if by == "weapon":
+            if self.weapon != None:
+                return self.weapon.damage
+            else:
+                return 0
+        elif by == "spell":
+            if self.spell != None:
+                return self.spell.damage
+            else:
+                return 0
+        else:
+            raise ValueError("Invalid arguement.")
 
     def equip(self, weapon):
         self.weapon = weapon
