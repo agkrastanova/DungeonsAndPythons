@@ -20,20 +20,47 @@ class Mixin:
             self.health = 0
         return self.health
 
-    def take_healing(healing_points):
-        pass
+    def take_healing(self, healing_points):
+        if not self.is_alive():
+            return False
 
-    def take_mana(mana_points):
-        pass
+        self.health += healing_points
 
-    def attack(by):
-        pass
+        if self.health > self.max_health:
+            self.health = self.max_health
 
-    def equip(weapon):
-        pass
+        return True
 
-    def learn(spell):
-        pass
+    def take_mana(self, mana_points):
+        if not self.is_alive():
+            return False
+
+        self.mana += mana_points
+
+        if self.mana > self.max_mana:
+            self.mana = self.max_mana
+        elif self.mana < 0:
+            self.mana = 0
+
+    def attack(self, by):
+        if by == "weapon":
+            if self.weapon != None:
+                return self.weapon.damage
+            else:
+                return 0
+        elif by == "spell":
+            if self.spell != None:
+                return self.spell.damage
+            else:
+                return 0
+        else:
+            raise ValueError("Invalid arguement.")
+
+    def equip(self, weapon):
+        self.weapon = weapon
+
+    def learn(self, spell):
+        self.spell = spell
 
 class Weapon:
 
