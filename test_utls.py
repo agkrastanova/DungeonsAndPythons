@@ -102,6 +102,22 @@ class TestMixinClass(unittest.TestCase):
         self.assertEqual(result, True)
         self.assertEqual(h.mana, 100)
 
+    def test_equip_hero_weapon_must_be_weapon(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        weapon = Weapon(name='Axe', damage = 20)
+        h.equip(weapon)
+
+        self.assertEqual(h.weapon, weapon)
+
+    def test_learn_spell_hero_spell_must_be_the_spell(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        spell = Spell(name = 'Fireball', damage=20, mana_cost=20, cast_range=2)
+        h.learn(spell)
+
+        self.assertEqual(h.spell, spell)
+
 
 class TestWeaponClass(unittest.TestCase):
     
