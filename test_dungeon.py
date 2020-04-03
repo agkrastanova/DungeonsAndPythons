@@ -1,6 +1,6 @@
 import unittest
 
-from dungeon import Hero, Enemy
+from dungeon import Hero, Enemy, Dungeon
 
 
 class TestHeroClass(unittest.TestCase):
@@ -150,6 +150,22 @@ class TestEnemyClass(unittest.TestCase):
         self.assertIsNotNone(exc)
         self.assertEqual(str(exc), 'Damage should be positive integer')
 
+
+class TestDungeonClass(unittest.TestCase):
+
+    def test_load_map_function_should_take_map_from_txt_file(self):
+
+        result = Dungeon('level1.txt')
+
+        self.assertEqual(str(result),'S.##.....T\n#T##..###.\n#.###E###E\n#.E...###.\n###T#####G' )
+
+    def test_print_map_function_should_print_map(self):
+
+        load_map = Dungeon('level1.txt')
+
+        printed_map = load_map.print_map()
+
+        self.assertEqual(str(load_map),str(printed_map))
 
 
 if __name__ == '__main__':
