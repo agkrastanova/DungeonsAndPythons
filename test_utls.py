@@ -50,6 +50,32 @@ class TestMixinClass(unittest.TestCase):
 
         self.assertEqual(mana, 100)
 
+    def test_take_healing_when_hero_is_not_alive_should_return_false(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        h.health = 0
+        result = h.take_healing(100)
+
+        self.assertEqual(result, False)
+
+    def test_take_healing_when_hero_is_alive_and_healing_is_less_than_max_health_should_return_True_and_hero_health_is_changed(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        h.health = 10
+        result = h.take_healing(50)
+
+        self.assertEqual(result, True)
+        self.assertEqual(h.health, 60)
+
+    def test_take_healing_when_hero_is_alive_and_healing_is_greater_than_max_should_return_True_and_health_must_be_max(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        h.health = 10
+        result = h.take_healing(100)
+
+        self.assertEqual(result, True)
+        self.assertEqual(h.health, 100)
+
 
 class TestWeaponClass(unittest.TestCase):
     
