@@ -89,37 +89,36 @@ class Dungeon:
         return level
 
     def print_map(self):
-        # print(self.__str__())
-        return self.__str__()
+        print(self.__str__())
 
     def spawn(self, hero):
         pass
 
     def move_hero(self, direction):
-        x, y = self.find_hero()
+        row, col = self.find_hero()
 
         if direction == 'up':
-            if y == 0 or self.level_map[y - 1] == '#':
+            if row == 0 or self.level_map[row - 1][col] == '#':
                 return False
             else:
-                self.level_map[x][y - 1] = 'H'
+                self.level_map[row - 1][col] = 'H'
         elif direction == 'left':
-            if x == 0 or self.level_map[x - 1] == '#':
+            if col == 0 or self.level_map[row][col - 1] == '#':
                 return False
             else:
-                self.level_map[x - 1][y] = 'H'
+                self.level_map[row][col - 1] = 'H'
         elif direction == 'right':
-            if x == len(self.level_map[0]) - 1 or self.level_map[x][y + 1] == '#':
+            if col == len(self.level_map[0]) - 1 or self.level_map[row][col + 1] == '#':
                 return False
             else:
-                self.level_map[x + 1][y] = 'H'
+                self.level_map[row][col + 1] = 'H'
         else:
-            if y == len(self.level_map) - 1 or self.level_map[x + 1][y] == '#':
+            if row == len(self.level_map) - 1 or self.level_map[row + 1][col] == '#':
                 return False
             else:
-                self.level_map[x][y + 1] = 'H'
+                self.level_map[row + 1][col] = 'H'
 
-        self.level_map[x][y] = '.'
+        self.level_map[row][col] = '.'
         return True
 
     def find_hero(self):
@@ -138,7 +137,3 @@ class Dungeon:
 
     def hero_attack(by):
         pass
-
-
-if __name__ == '__main__':
-    main()

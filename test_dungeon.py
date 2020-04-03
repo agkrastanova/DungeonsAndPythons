@@ -10,7 +10,7 @@ class TestHeroClass(unittest.TestCase):
         exc = None
 
         try:
-            Hero(name = 123, title='Dragonslayer', health = 100, mana=100, mana_regeneration_rate=2)
+            Hero(name=123, title='Dragonslayer', health=100, mana=100, mana_regeneration_rate=2)
         except Exception as err:
             exc = err
 
@@ -22,20 +22,19 @@ class TestHeroClass(unittest.TestCase):
         exc = None
 
         try:
-            Hero(name = 'Bron', title='Dragonslayer', health = 'asd', mana=100, mana_regeneration_rate=2)
+            Hero(name='Bron', title='Dragonslayer', health='asd', mana=100, mana_regeneration_rate=2)
         except Exception as err:
             exc = err
 
         self.assertIsNotNone(exc)
         self.assertEqual(str(exc), 'Health should be positive integer')
 
-
     def test_instantiating_hero_with_wrong_type_mana_should_raise_error(self):
 
         exc = None
 
         try:
-            Hero(name = 'Bron', title='Dragonslayer', health = 100, mana='asd', mana_regeneration_rate=2)
+            Hero(name='Bron', title='Dragonslayer', health=100, mana='asd', mana_regeneration_rate=2)
         except Exception as err:
             exc = err
 
@@ -47,7 +46,7 @@ class TestHeroClass(unittest.TestCase):
         exc = None
 
         try:
-            Hero(name = 'Bron', title='Dragonslayer', health = 100, mana=100, mana_regeneration_rate='asd')
+            Hero(name='Bron', title='Dragonslayer', health=100, mana=100, mana_regeneration_rate='asd')
         except Exception as err:
             exc = err
 
@@ -59,13 +58,12 @@ class TestHeroClass(unittest.TestCase):
         exc = None
 
         try:
-            Hero(name = 'Bron', title='Dragonslayer', health = 100, mana=100, mana_regeneration_rate=-2)
+            Hero(name='Bron', title='Dragonslayer', health=100, mana=100, mana_regeneration_rate=-2)
         except Exception as err:
             exc = err
 
         self.assertIsNotNone(exc)
         self.assertEqual(str(exc), 'Mana_regeneration_rate should be positive integer')
-
 
     def test_known_as_representation_works_correctly(self):
         h = Hero(name='Bron', title='Dragonslayer', health=100, mana=100, mana_regeneration_rate=2)
@@ -100,7 +98,6 @@ class TestEnemyClass(unittest.TestCase):
 
         self.assertIsNotNone(exc)
         self.assertEqual(str(exc), 'Health should be positive integer')
-
 
     def test_instantiating_enemy_with_wrong_type_mana_should_raise_error(self):
 
@@ -157,15 +154,15 @@ class TestDungeonClass(unittest.TestCase):
 
         result = Dungeon('level1.txt')
 
-        self.assertEqual(str(result),'S.##.....T\n#T##..###.\n#.###E###E\n#.E...###.\n###T#####G' )
+        self.assertEqual(str(result), 'S.##.....T\n#T##..###.\n#.###E###E\n#.E...###.\n###T#####G')
 
     def test_print_map_function_should_print_map(self):
 
         load_map = Dungeon('level1.txt')
 
-        printed_map = load_map.print_map()
+        printed_map = load_map.__str__()
 
-        self.assertEqual(str(load_map), str(printed_map))
+        self.assertEqual(str(load_map), printed_map)
 
     def test_move_hero_up_should_return_true_if_can_move_or_false_if_not(self):
         map_ = Dungeon('level1.txt')
@@ -212,6 +209,7 @@ class TestDungeonClass(unittest.TestCase):
         expected = (0, 0)
 
         self.assertEqual(result, expected)
+
 
 if __name__ == '__main__':
     unittest.main()

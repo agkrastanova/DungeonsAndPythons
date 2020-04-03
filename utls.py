@@ -1,5 +1,4 @@
 class Mixin:
-    
     def get_health(self):
         return self.health
 
@@ -11,9 +10,9 @@ class Mixin:
         return alive > 0
 
     def can_cast(self):
-        return Mixin.get_mana(self) > 0 
+        return Mixin.get_mana(self) > 0
 
-    def take_damage(self,damage_points):
+    def take_damage(self, damage_points):
         self.health -= damage_points
 
         if self.health <= 0:
@@ -46,12 +45,12 @@ class Mixin:
 
     def attack(self, by):
         if by == "weapon":
-            if self.weapon != None:
+            if self.weapon is not None:
                 return self.weapon.damage
             else:
                 return 0
         elif by == "spell":
-            if self.spell != None:
+            if self.spell is not None:
                 return self.spell.damage
             else:
                 return 0
@@ -62,16 +61,17 @@ class Mixin:
     def learn(self, spell):
         self.spell = spell
 
-class Weapon:
 
+class Weapon:
     def __init__(self, name, damage):
         if type(name) is not str:
             raise ValueError('Name should be string')
         if type(damage) is not int or damage < 0:
-            raise ValueError('Damage should be positive integer') 
+            raise ValueError('Damage should be positive integer')
 
         self.name = name
         self.damage = damage
+
 
 class Spell:
 
@@ -84,7 +84,7 @@ class Spell:
         self.cast_range = cast_range
 
     @staticmethod
-    def validate_spell_arguments(name,damage, mana_cost, cast_range):
+    def validate_spell_arguments(name, damage, mana_cost, cast_range):
         if type(name) is not str:
             raise ValueError('Name should be string')
 
@@ -96,7 +96,3 @@ class Spell:
 
         if type(cast_range) is not int or cast_range < 0:
             raise ValueError('Cast_range should be positive integer')
-
-
-if __name__ == '__main__':
-    main()

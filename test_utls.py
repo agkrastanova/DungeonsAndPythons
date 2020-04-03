@@ -3,8 +3,8 @@ import unittest
 from utls import Mixin, Weapon, Spell
 from dungeon import Hero, Enemy
 
+
 class TestMixinClass(unittest.TestCase):
-    
     def test_get_health_function_should_return_current_health(self):
 
         h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
@@ -20,7 +20,6 @@ class TestMixinClass(unittest.TestCase):
 
         self.assertTrue(result)
 
-
     def test_can_cast_function_should_return_true_if_object_can_cast(self):
         h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
 
@@ -31,11 +30,11 @@ class TestMixinClass(unittest.TestCase):
     def test_take_damage_should_reduce_health_with_damage_points(self):
         h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
 
-        reduced_health = Mixin.take_damage(h,65)
+        reduced_health = Mixin.take_damage(h, 65)
 
         self.assertEqual(reduced_health, 35)
 
-        reduced_health2 = Mixin.take_damage(h,50)
+        reduced_health2 = Mixin.take_damage(h, 50)
 
         self.assertEqual(reduced_health2, 0)
 
@@ -105,7 +104,7 @@ class TestMixinClass(unittest.TestCase):
     def test_equip_hero_weapon_must_be_weapon(self):
         h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
 
-        weapon = Weapon(name='Axe', damage = 20)
+        weapon = Weapon(name='Axe', damage=20)
         h.equip(weapon)
 
         self.assertEqual(h.weapon, weapon)
@@ -113,7 +112,7 @@ class TestMixinClass(unittest.TestCase):
     def test_learn_spell_hero_spell_must_be_the_spell(self):
         h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
 
-        spell = Spell(name = 'Fireball', damage=20, mana_cost=20, cast_range=2)
+        spell = Spell(name='Fireball', damage=20, mana_cost=20, cast_range=2)
         h.learn(spell)
 
         self.assertEqual(h.spell, spell)
@@ -127,7 +126,7 @@ class TestMixinClass(unittest.TestCase):
 
     def test_attack_method_when_by_weapon_when_has_weapon(self):
         h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
-        weapon = Weapon(name='Axe', damage = 20)
+        weapon = Weapon(name='Axe', damage=20)
         h.equip(weapon)
 
         result = h.attack(by='weapon')
@@ -143,20 +142,20 @@ class TestMixinClass(unittest.TestCase):
 
     def test_attack_method_when_by_spell_when_has_spell(self):
         h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
-        spell = Spell(name = 'Fireball', damage=20, mana_cost=20, cast_range=2)
+        spell = Spell(name='Fireball', damage=20, mana_cost=20, cast_range=2)
         h.learn(spell)
 
         result = h.attack(by='spell')
 
         self.assertEqual(result, 20)
 
+
 class TestWeaponClass(unittest.TestCase):
-    
     def test_instantiating_weapon_wrong_type_name_should_raise_error(self):
         exc = None
 
         try:
-            Weapon(name = 123, damage= 20)
+            Weapon(name=123, damage=20)
         except Exception as err:
             exc = err
 
@@ -168,7 +167,7 @@ class TestWeaponClass(unittest.TestCase):
         exc = None
 
         try:
-            Weapon(name='Axe', damage = -20)
+            Weapon(name='Axe', damage=-20)
         except Exception as err:
             exc = err
 
@@ -177,12 +176,11 @@ class TestWeaponClass(unittest.TestCase):
 
 
 class TestSpellClass(unittest.TestCase):
-    
     def test_instantiating_spell_with_wrong_type_name_should_raise_error(self):
         exc = None
 
         try:
-            Spell(name = 123, damage= 20, mana_cost=20, cast_range=2)
+            Spell(name=123, damage=20, mana_cost=20, cast_range=2)
         except Exception as err:
             exc = err
 
@@ -193,7 +191,7 @@ class TestSpellClass(unittest.TestCase):
         exc = None
 
         try:
-            Spell(name = 'Fireball', damage=-20, mana_cost=20, cast_range=2)
+            Spell(name='Fireball', damage=-20, mana_cost=20, cast_range=2)
         except Exception as err:
             exc = err
 
@@ -204,7 +202,7 @@ class TestSpellClass(unittest.TestCase):
         exc = None
 
         try:
-            Spell(name = 'Fireball', damage=20, mana_cost=-20, cast_range=2)
+            Spell(name='Fireball', damage=20, mana_cost=-20, cast_range=2)
         except Exception as err:
             exc = err
 
@@ -215,7 +213,7 @@ class TestSpellClass(unittest.TestCase):
         exc = None
 
         try:
-            Spell(name = 'Fireball', damage=20, mana_cost=20, cast_range='a')
+            Spell(name='Fireball', damage=20, mana_cost=20, cast_range='a')
         except Exception as err:
             exc = err
 
