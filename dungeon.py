@@ -61,14 +61,46 @@ class Enemy(Mixin):
 
 
 class Dungeon:
+    HERO = 'H'
+    ENEMY = 'E'
+    START = 'S'
+    EXIT = 'G'
+    OBSTACLE = '#'
+    TREASURE = 'T'
+    WALKABLE_PATH = '.'
+    POSSIBLE_DIRECTIONS = ['up', 'down', 'left', 'right']
 
-    def load_map():
-        pass
 
-    def print_map():
-        pass
+    def __init__(self, level_map):
+        self.level_map = level_map
 
-    def spawn(hero):
+
+    @staticmethod
+    def load_map(file):
+        with open(file) as f:
+            line = f.read().split('\n')
+            level1 = [list(l) for l in line if l.strip() != '']
+
+        return Dungeon(level1)
+
+
+    def __str__(self):
+        level = ''
+        for line in self.level_map:
+            for l in line:
+                level += str(l)
+            level += '\n'
+
+        level = level[:-1]
+
+        return level
+
+
+    def print_map(self):
+        #print(self.__str__())
+        return self.__str__()
+
+    def spawn(self,hero):
         pass
 
     def move_hero(direction):
@@ -77,7 +109,8 @@ class Dungeon:
     def pick_treasure():
         pass
 
-
+    def hero_attack(by):
+        pass
 
 if __name__ == '__main__':
     main()
