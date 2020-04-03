@@ -72,17 +72,12 @@ class Dungeon:
     POSSIBLE_DIRECTIONS = ['up', 'down', 'left', 'right']
 
 
-    def __init__(self, level_map):
-        self.level_map = level_map
-
-
-    @staticmethod
-    def load_map(file):
-        with open(file) as f:
+    def __init__(self, level1):
+        with open(level1) as f:
             line = f.read().split('\n')
-            level1 = [list(l) for l in line if l.strip() != '']
+            level_map = [list(l) for l in line if l.strip() != '']
 
-        return Dungeon(level1)
+        self.level_map = level_map
 
 
     def __str__(self):
@@ -110,11 +105,9 @@ class Dungeon:
     def pick_treasure():
         pass
 
-<<<<<<< HEAD
     def hero_attack(by):
         pass
-=======
->>>>>>> b602c96e11342661eb2fca8409c56d5262002b85
+
 
 if __name__ == '__main__':
     main()
