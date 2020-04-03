@@ -1,5 +1,6 @@
 from utls import Mixin, Weapon, Spell
 
+
 class Hero(Mixin):
 
     def __init__(self, name, title, health, mana, mana_regeneration_rate):
@@ -109,8 +110,11 @@ class Dungeon:
     def pick_treasure():
         pass
 
+<<<<<<< HEAD
     def hero_attack(by):
         pass
+=======
+>>>>>>> b602c96e11342661eb2fca8409c56d5262002b85
 
 if __name__ == '__main__':
     main()

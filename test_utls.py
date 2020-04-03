@@ -121,8 +121,7 @@ class TestSpellClass(unittest.TestCase):
             exc = err
 
         self.assertIsNotNone(exc)
-        self.assertEqual(str(exc), 'Cast_range should be positive integer')        
-
+        self.assertEqual(str(exc), 'Cast_range should be positive integer')
 
 
 if __name__ == '__main__':

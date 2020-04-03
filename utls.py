@@ -70,5 +70,6 @@ class Spell:
         if type(cast_range) is not int or cast_range < 0:
             raise ValueError('Cast_range should be positive integer')
 
+
 if __name__ == '__main__':
     main()

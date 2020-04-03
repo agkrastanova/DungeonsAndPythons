@@ -151,6 +151,7 @@ class TestEnemyClass(unittest.TestCase):
         self.assertEqual(str(exc), 'Damage should be positive integer')
 
 
+<<<<<<< HEAD
 class TestDungeonClass(unittest.TestCase):
 
     def test_load_map_function_should_take_map_from_txt_file(self):
@@ -167,6 +168,8 @@ class TestDungeonClass(unittest.TestCase):
 
         self.assertEqual(str(load_map),str(printed_map))
 
+=======
+>>>>>>> b602c96e11342661eb2fca8409c56d5262002b85
 
 if __name__ == '__main__':
     unittest.main()
