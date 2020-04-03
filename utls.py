@@ -41,7 +41,7 @@ class Mixin:
             self.mana = self.max_mana
         elif self.mana < 0:
             self.mana = 0
-            
+
         return True
 
     def attack(self, by):
@@ -55,8 +55,6 @@ class Mixin:
                 return self.spell.damage
             else:
                 return 0
-        else:
-            raise ValueError("Invalid arguement.")
 
     def equip(self, weapon):
         self.weapon = weapon

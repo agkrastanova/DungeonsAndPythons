@@ -118,6 +118,37 @@ class TestMixinClass(unittest.TestCase):
 
         self.assertEqual(h.spell, spell)
 
+    def test_attack_method_when_by_weapon_when_no_weapon(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        result = h.attack(by='weapon')
+
+        self.assertEqual(result, 0)
+
+    def test_attack_method_when_by_weapon_when_has_weapon(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+        weapon = Weapon(name='Axe', damage = 20)
+        h.equip(weapon)
+
+        result = h.attack(by='weapon')
+
+        self.assertEqual(result, 20)
+
+    def test_attack_method_when_by_spell_when_no_spell(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        result = h.attack(by='spell')
+
+        self.assertEqual(result, 0)
+
+    def test_attack_method_when_by_spell_when_has_spell(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+        spell = Spell(name = 'Fireball', damage=20, mana_cost=20, cast_range=2)
+        h.learn(spell)
+
+        result = h.attack(by='spell')
+
+        self.assertEqual(result, 20)
 
 class TestWeaponClass(unittest.TestCase):
     
