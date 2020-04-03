@@ -25,8 +25,16 @@ class Mixin:
 
         return True
 
-    def take_mana(mana_points):
-        pass
+    def take_mana(self, mana_points):
+        if not self.is_alive():
+            return False
+
+        self.mana += mana_points
+
+        if self.mana > self.max_mana:
+            self.mana = self.max_mana
+        elif self.mana < 0:
+            self.mana = 0
 
     def attack(by):
         pass
