@@ -3,55 +3,62 @@ from utls import Mixin, Weapon, Spell
 class Hero(Mixin):
 
     def __init__(self, name, title, health, mana, mana_regeneration_rate):
-        if type(name) is not str:
-            raise TypeError('Name should be string')
-
-        if type(health) is not int:
-            raise TypeError('Health should be number')
-
-        if type(mana) is not int:
-            raise TypeError('Mana should be number')
-
-        if type(mana_regeneration_rate) is not int:
-            raise TypeError('Mana_regeneration_rate should be integer')
-        elif mana_regeneration_rate < 0:
-            raise ValueError('Mana_regeneration_rate cannot be negative')
+        self.validate_arguments_hero(name, health, mana, mana_regeneration_rate)
 
         self.name = name
         self.title = title
         self.health = health
         self.mana = mana
         self.mana_regeneration_rate = mana_regeneration_rate
+       
         self.max_health = health
         self.max_mana = mana
+
 
     def known_as(self):
         return(f'{self.name} the {self.title }')
 
+
+    @staticmethod
+    def validate_arguments_hero(name, health, mana, mana_regeneration_rate):
+
+        if type(name) is not str:
+            raise TypeError('Name should be string')
+
+        if type(health) is not int or health <= 0:
+            raise TypeError('Health should be positive integer')
+
+        if type(mana) is not int or mana <= 0:
+            raise TypeError('Mana should be positive integer')
+
+        if type(mana_regeneration_rate) is not int or mana_regeneration_rate <= 0:
+            raise TypeError('Mana_regeneration_rate should be positive integer')
+        
+
+
 class Enemy(Mixin):
 	
     def __init__(self,health, mana, damage): 
-
-        if type(health) is not int:
-            raise TypeError('Health should be number')
-        elif health <= 0:
-            raise ValueError('Health cannot be zero or negative')
-
-        if type(mana) is not int:
-            raise TypeError('Mana should be number')
-        elif mana < 0 :
-            raise ValueError('Mana cannot be negative')
-
-        if type(damage) is not int:
-            raise TypeError('Damage should be number')
-        elif damage < 0:
-            raise ValueError('Damage cannot be negative')
+        self.validate_arguments_enemy(health, mana, damage)
 
         self.health = health
         self.mana = mana
         self.damage = damage
         self.max_health = health
-        self.max_damage = damage
+        self.max_mana = mana
+
+    @staticmethod
+    def validate_arguments_enemy(health, mana, damage):
+
+        if type(health) is not int or health <= 0:
+            raise TypeError('Health should be positive integer')
+        
+        if type(mana) is not int or mana <= 0:
+            raise TypeError('Mana should be positive integer')
+        
+        if type(damage) is not int or damage <= 0:
+            raise TypeError('Damage should be positive integer')
+
 
 class Dungeon:
 

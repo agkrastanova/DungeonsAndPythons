@@ -27,7 +27,7 @@ class TestHeroClass(unittest.TestCase):
             exc = err
 
         self.assertIsNotNone(exc)
-        self.assertEqual(str(exc), 'Health should be number')
+        self.assertEqual(str(exc), 'Health should be positive integer')
 
 
     def test_instantiating_hero_with_wrong_type_mana_should_raise_error(self):
@@ -40,7 +40,7 @@ class TestHeroClass(unittest.TestCase):
             exc = err
 
         self.assertIsNotNone(exc)
-        self.assertEqual(str(exc), 'Mana should be number')
+        self.assertEqual(str(exc), 'Mana should be positive integer')
 
     def test_instantiating_hero_with_wrong_type_mana_regeneration_rate_should_raise_error(self):
 
@@ -52,7 +52,7 @@ class TestHeroClass(unittest.TestCase):
             exc = err
 
         self.assertIsNotNone(exc)
-        self.assertEqual(str(exc), 'Mana_regeneration_rate should be integer')
+        self.assertEqual(str(exc), 'Mana_regeneration_rate should be positive integer')
 
     def test_instantiating_hero_with_negative_mana_regeneration_rate_should_raise_error(self):
 
@@ -64,7 +64,7 @@ class TestHeroClass(unittest.TestCase):
             exc = err
 
         self.assertIsNotNone(exc)
-        self.assertEqual(str(exc), 'Mana_regeneration_rate cannot be negative')
+        self.assertEqual(str(exc), 'Mana_regeneration_rate should be positive integer')
 
 
     def test_known_as_representation_works_correctly(self):
@@ -87,7 +87,7 @@ class TestEnemyClass(unittest.TestCase):
             exc = err
 
         self.assertIsNotNone(exc)
-        self.assertEqual(str(exc), 'Health should be number')
+        self.assertEqual(str(exc), 'Health should be positive integer')
 
     def test_instantiating_enemy_with_negative_health_should_raise_error(self):
 
@@ -99,7 +99,7 @@ class TestEnemyClass(unittest.TestCase):
             exc = err
 
         self.assertIsNotNone(exc)
-        self.assertEqual(str(exc), 'Health cannot be zero or negative')
+        self.assertEqual(str(exc), 'Health should be positive integer')
 
 
     def test_instantiating_enemy_with_wrong_type_mana_should_raise_error(self):
@@ -112,7 +112,7 @@ class TestEnemyClass(unittest.TestCase):
             exc = err
 
         self.assertIsNotNone(exc)
-        self.assertEqual(str(exc), 'Mana should be number')
+        self.assertEqual(str(exc), 'Mana should be positive integer')
 
     def test_instantiating_enemy_with_negative_mana_should_raise_error(self):
 
@@ -124,7 +124,7 @@ class TestEnemyClass(unittest.TestCase):
             exc = err
 
         self.assertIsNotNone(exc)
-        self.assertEqual(str(exc), 'Mana cannot be negative')
+        self.assertEqual(str(exc), 'Mana should be positive integer')
 
     def test_instantiating_enemy_with_wrong_type_damage_should_raise_error(self):
 
@@ -136,7 +136,7 @@ class TestEnemyClass(unittest.TestCase):
             exc = err
 
         self.assertIsNotNone(exc)
-        self.assertEqual(str(exc), 'Damage should be number')
+        self.assertEqual(str(exc), 'Damage should be positive integer')
 
     def test_instantiating_enemy_with_negative_damage_should_raise_error(self):
 
@@ -148,7 +148,7 @@ class TestEnemyClass(unittest.TestCase):
             exc = err
 
         self.assertIsNotNone(exc)
-        self.assertEqual(str(exc), 'Damage cannot be negative')
+        self.assertEqual(str(exc), 'Damage should be positive integer')
 
 
 if __name__ == '__main__':
