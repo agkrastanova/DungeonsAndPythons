@@ -165,8 +165,53 @@ class TestDungeonClass(unittest.TestCase):
 
         printed_map = load_map.print_map()
 
-        self.assertEqual(str(load_map),str(printed_map))
+        self.assertEqual(str(load_map), str(printed_map))
 
+    def test_move_hero_up_should_return_true_if_can_move_or_false_if_not(self):
+        map_ = Dungeon('level1.txt')
+        map_.level_map[0][0] = 'H'
+
+        result = map_.move_hero('up')
+
+        self.assertEqual(result, False)
+
+    def test_move_hero_left_should_return_true_if_can_move_or_false_if_not(self):
+        map_ = Dungeon('level1.txt')
+        map_.level_map[0][0] = 'H'
+
+        result = map_.move_hero('left')
+
+        self.assertEqual(result, False)
+
+    def test_move_hero_right_should_return_true_if_can_move_or_false_if_not(self):
+        map_ = Dungeon('level1.txt')
+        map_.level_map[0][0] = 'H'
+
+        result = map_.move_hero('right')
+
+        self.assertEqual(result, True)
+
+    def test_move_hero_down_should_return_true_if_can_move_or_false_if_not(self):
+        map_ = Dungeon('level1.txt')
+        map_.level_map[0][0] = 'H'
+
+        result = map_.move_hero('down')
+
+        self.assertEqual(result, False)
+
+    def test_find_hero_returns_hero_coordinates_or_none_if_hero_not_found(self):
+        map_ = Dungeon('level1.txt')
+
+        result = map_.find_hero()
+        expected = None
+        self.assertEqual(result, expected)
+
+        map_.level_map[0][0] = 'H'
+
+        result = map_.find_hero()
+        expected = (0, 0)
+
+        self.assertEqual(result, expected)
 
 if __name__ == '__main__':
     unittest.main()
