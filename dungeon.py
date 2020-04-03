@@ -15,6 +15,9 @@ class Hero(Mixin):
         self.max_health = health
         self.max_mana = mana
 
+        self.weapon = None
+        self.spell = None
+
 
     def known_as(self):
         return(f'{self.name} the {self.title }')

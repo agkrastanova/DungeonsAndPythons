@@ -50,6 +50,105 @@ class TestMixinClass(unittest.TestCase):
 
         self.assertEqual(mana, 100)
 
+    def test_take_healing_when_hero_is_not_alive_should_return_false(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        h.health = 0
+        result = h.take_healing(100)
+
+        self.assertEqual(result, False)
+
+    def test_take_healing_when_hero_is_alive_and_healing_is_less_than_max_health_should_return_True_and_hero_health_is_changed(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        h.health = 10
+        result = h.take_healing(50)
+
+        self.assertEqual(result, True)
+        self.assertEqual(h.health, 60)
+
+    def test_take_healing_when_hero_is_alive_and_healing_is_greater_than_max_should_return_True_and_health_must_be_max(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        h.health = 10
+        result = h.take_healing(100)
+
+        self.assertEqual(result, True)
+        self.assertEqual(h.health, 100)
+
+    def test_take_mana_when_hero_is_not_alive_should_return_false(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        h.health = 0
+        result = h.take_mana(20)
+
+        self.assertEqual(result, False)
+
+    def test_take_mana_when_hero_is_alive_should_return_true_and_icrease_mana(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        h.mana = 0
+        result = h.take_mana(20)
+
+        self.assertEqual(result, True)
+        self.assertEqual(h.mana, 20)
+
+    def test_take_mana_when_hero_is_alive_and_mana_is_more_than_max_should_return_true_and_make_mana_max(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        h.mana = 0
+        result = h.take_mana(120)
+
+        self.assertEqual(result, True)
+        self.assertEqual(h.mana, 100)
+
+    def test_equip_hero_weapon_must_be_weapon(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        weapon = Weapon(name='Axe', damage = 20)
+        h.equip(weapon)
+
+        self.assertEqual(h.weapon, weapon)
+
+    def test_learn_spell_hero_spell_must_be_the_spell(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        spell = Spell(name = 'Fireball', damage=20, mana_cost=20, cast_range=2)
+        h.learn(spell)
+
+        self.assertEqual(h.spell, spell)
+
+    def test_attack_method_when_by_weapon_when_no_weapon(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        result = h.attack(by='weapon')
+
+        self.assertEqual(result, 0)
+
+    def test_attack_method_when_by_weapon_when_has_weapon(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+        weapon = Weapon(name='Axe', damage = 20)
+        h.equip(weapon)
+
+        result = h.attack(by='weapon')
+
+        self.assertEqual(result, 20)
+
+    def test_attack_method_when_by_spell_when_no_spell(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+
+        result = h.attack(by='spell')
+
+        self.assertEqual(result, 0)
+
+    def test_attack_method_when_by_spell_when_has_spell(self):
+        h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+        spell = Spell(name = 'Fireball', damage=20, mana_cost=20, cast_range=2)
+        h.learn(spell)
+
+        result = h.attack(by='spell')
+
+        self.assertEqual(result, 20)
 
 class TestWeaponClass(unittest.TestCase):
     
