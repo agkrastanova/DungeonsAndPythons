@@ -41,6 +41,8 @@ class Mixin:
             self.mana = self.max_mana
         elif self.mana < 0:
             self.mana = 0
+            
+        return True
 
     def attack(self, by):
         if by == "weapon":
