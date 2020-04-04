@@ -1,4 +1,5 @@
 from utls import Mixin, Weapon, Spell
+from random import shuffle
 
 
 class Hero(Mixin):
@@ -72,10 +73,21 @@ class Dungeon:
 
     def __init__(self, level1):
         with open(level1) as f:
-            line = f.read().split('\n')
-            level_map = [list(l) for l in line if l.strip() != '']
+            lines = f.read()
+            level_lines = lines.split('/////')[0]
+            level_lines = level_lines.split('\n')
+
+            treasure_lines = lines.split('/////')[1]
+            treasure_lines = treasure_lines.split('\n')
+
+            level_map = [list(l) for l in level_lines if l.strip() != '']
+
+            treasures = treasure_lines
+            treasures.pop(0)
+            treasures.pop(-1)
 
         self.level_map = level_map
+        self.treasures = treasures
 
     def __str__(self):
         level = ''
@@ -132,8 +144,20 @@ class Dungeon:
                         return (row, col)
         return None
 
-    def pick_treasure():
-        pass
+    def pick_treasure(self):
+        shuffle(self.treasures)
+        treasure = self.treasures[0].split(';')
+
+        if treasure[0] == 'weapon':
+            weapon = Weapon(name=treasure[1], damage=int(treasure[2]))
+            print(f"Found weapon: {weapon}.")
+            return weapon
+        elif treasure[0] == 'spell':
+            spell = Spell(name=treasure[1], damage=int(treasure[2]), mana_cost=int(treasure[3]), cast_range=int(treasure[4]))
+            print(f'Found spell: {spell}')
+            return spell
+
+        return treasure
 
     def hero_attack(by):
         pass

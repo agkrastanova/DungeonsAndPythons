@@ -1,6 +1,6 @@
 import unittest
 
-from dungeon import Hero, Enemy, Dungeon
+from dungeon import Hero, Enemy, Dungeon, Weapon, Spell
 
 
 class TestHeroClass(unittest.TestCase):
@@ -209,6 +209,12 @@ class TestDungeonClass(unittest.TestCase):
         expected = (0, 0)
 
         self.assertEqual(result, expected)
+
+    def test_pick_treasure_should_return_random_weapon_or_spell(self):
+        map = Dungeon('level1.txt')
+        treasure = map.pick_treasure()
+
+        self.assertIn(type(treasure), [Weapon, Spell])
 
 
 if __name__ == '__main__':

@@ -174,6 +174,11 @@ class TestWeaponClass(unittest.TestCase):
         self.assertIsNotNone(exc)
         self.assertEqual(str(exc), 'Damage should be positive integer')
 
+    def test_weapon_str_repr(self):
+        weapon = Weapon(name='Axe', damage=20)
+
+        self.assertEqual(str(weapon), 'Axe, damage: 20')
+
 
 class TestSpellClass(unittest.TestCase):
     def test_instantiating_spell_with_wrong_type_name_should_raise_error(self):
@@ -219,6 +224,11 @@ class TestSpellClass(unittest.TestCase):
 
         self.assertIsNotNone(exc)
         self.assertEqual(str(exc), 'Cast_range should be positive integer')
+
+    def test_spell_str_repr(self):
+        spell = Spell(name='Fireball', damage=20, mana_cost=20, cast_range=2)
+
+        self.assertEqual(str(spell), 'Fireball, damage: 20, mana cost: 20, cast range: 2')
 
 
 if __name__ == '__main__':
