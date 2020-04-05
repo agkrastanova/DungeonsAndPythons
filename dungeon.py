@@ -72,10 +72,21 @@ class Dungeon:
 
     def __init__(self, level1):
         with open(level1) as f:
-            line = f.read().split('\n')
-            level_map = [list(l) for l in line if l.strip() != '']
+            lines = f.read()
+            level_lines = lines.split('/////')[0]
+            level_lines = level_lines.split('\n')
+
+            treasure_lines = lines.split('/////')[1]
+            treasure_lines = treasure_lines.split('\n')
+
+            level_map = [list(l) for l in level_lines if l.strip() != '']
+
+            treasures = treasure_lines
+            treasures.pop(0)
+            treasures.pop(-1)
 
         self.level_map = level_map
+        self.treasures = treasures
 
     def __str__(self):
         level = ''
@@ -92,7 +103,13 @@ class Dungeon:
         print(self.__str__())
 
     def spawn(self, hero):
-        pass
+        for line in self.level_map:
+            for index, element in enumerate(line):
+                if element == Dungeon.START:
+                    line[index] = Dungeon.HERO
+                    return True
+
+        return False
 
     def move_hero(self, direction):
         row, col = self.find_hero()
