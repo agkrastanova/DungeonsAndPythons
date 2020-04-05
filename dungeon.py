@@ -104,7 +104,14 @@ class Dungeon:
         print(self.__str__())
 
     def spawn(self, hero):
-        pass
+        for line in self.level_map:
+            for index, element in enumerate(line):
+                if element == Dungeon.START:
+                    line[index] = Dungeon.HERO
+                    self.hero = hero
+                    return True
+
+        return False
 
     def move_hero(self, direction):
         row, col = self.find_hero()
@@ -154,10 +161,16 @@ class Dungeon:
             return weapon
         elif treasure[0] == 'spell':
             spell = Spell(name=treasure[1], damage=int(treasure[2]), mana_cost=int(treasure[3]), cast_range=int(treasure[4]))
-            print(f'Found spell: {spell}')
+            print(f'Found spell: {spell}.')
             return spell
+        elif treasure[0] == 'health':
+            self.hero.take_healing(int(treasure[1]))
+            print(f'Found health potion. Hero health is {self.hero.health}.')
+        else:
+            self.hero.take_mana(int(treasure[1]))
+            print(f'Found mana potion. Hero mana is {self.hero.mana}.')
 
-        return treasure
+        return treasure[0]
 
     def hero_attack(by):
         pass

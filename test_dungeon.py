@@ -212,9 +212,11 @@ class TestDungeonClass(unittest.TestCase):
 
     def test_pick_treasure_should_return_random_weapon_or_spell(self):
         map = Dungeon('level1.txt')
+        hero = Hero(name='Bron', title='Dragonslayer', health=100, mana=100, mana_regeneration_rate=2)
+        map.spawn(hero)
         treasure = map.pick_treasure()
 
-        self.assertIn(type(treasure), [Weapon, Spell])
+        self.assertIn(type(treasure), [Weapon, Spell, str])
 
 
 if __name__ == '__main__':
