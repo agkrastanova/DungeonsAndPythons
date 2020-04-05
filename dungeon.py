@@ -1,64 +1,5 @@
-from utls import Mixin, Weapon, Spell
+from utls import Mixin, Weapon, Spell, Hero, Enemy, Fight
 from random import shuffle
-
-
-class Hero(Mixin):
-
-    def __init__(self, name, title, health, mana, mana_regeneration_rate):
-        self.validate_arguments_hero(name, health, mana, mana_regeneration_rate)
-
-        self.name = name
-        self.title = title
-        self.health = health
-        self.mana = mana
-        self.mana_regeneration_rate = mana_regeneration_rate
-
-        self.max_health = health
-        self.max_mana = mana
-
-        self.weapon = None
-        self.spell = None
-
-    def known_as(self):
-        return(f'{self.name} the {self.title }')
-
-    @staticmethod
-    def validate_arguments_hero(name, health, mana, mana_regeneration_rate):
-
-        if type(name) is not str:
-            raise TypeError('Name should be string')
-
-        if type(health) is not int or health <= 0:
-            raise TypeError('Health should be positive integer')
-
-        if type(mana) is not int or mana <= 0:
-            raise TypeError('Mana should be positive integer')
-
-        if type(mana_regeneration_rate) is not int or mana_regeneration_rate <= 0:
-            raise TypeError('Mana_regeneration_rate should be positive integer')
-
-
-class Enemy(Mixin):
-    def __init__(self, health, mana, damage):
-        self.validate_arguments_enemy(health, mana, damage)
-
-        self.health = health
-        self.mana = mana
-        self.damage = damage
-        self.max_health = health
-        self.max_mana = mana
-
-    @staticmethod
-    def validate_arguments_enemy(health, mana, damage):
-
-        if type(health) is not int or health <= 0:
-            raise TypeError('Health should be positive integer')
-
-        if type(mana) is not int or mana <= 0:
-            raise TypeError('Mana should be positive integer')
-
-        if type(damage) is not int or damage <= 0:
-            raise TypeError('Damage should be positive integer')
 
 
 class Dungeon:
@@ -88,6 +29,8 @@ class Dungeon:
 
         self.level_map = level_map
         self.treasures = treasures
+
+        self.enemy = Enemy(health=100, mana=20, damage=20)
 
     def __str__(self):
         level = ''
@@ -120,21 +63,29 @@ class Dungeon:
             if row == 0 or self.level_map[row - 1][col] == Dungeon.OBSTACLE:
                 return False
             else:
+                if self.level_map[row - 1][col] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy)
                 self.level_map[row - 1][col] = Dungeon.HERO
         elif direction == 'left':
             if col == 0 or self.level_map[row][col - 1] == Dungeon.OBSTACLE:
                 return False
             else:
+                if self.level_map[row - 1][col] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy)
                 self.level_map[row][col - 1] = Dungeon.HERO
         elif direction == 'right':
             if col == len(self.level_map[0]) - 1 or self.level_map[row][col + 1] == Dungeon.OBSTACLE:
                 return False
             else:
+                if self.level_map[row - 1][col] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy)
                 self.level_map[row][col + 1] = Dungeon.HERO
         else:
             if row == len(self.level_map) - 1 or self.level_map[row + 1][col] == Dungeon.OBSTACLE:
                 return False
             else:
+                if self.level_map[row - 1][col] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy)
                 self.level_map[row + 1][col] = Dungeon.HERO
 
         self.level_map[row][col] = Dungeon.WALKABLE_PATH
@@ -172,5 +123,7 @@ class Dungeon:
 
         return treasure[0]
 
-    def hero_attack(by):
-        pass
+    def hero_attack(self, by):
+        if by == 'spell':
+            row, col = self.find_hero()
+            pass
