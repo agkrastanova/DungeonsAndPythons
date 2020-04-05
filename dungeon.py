@@ -110,27 +110,27 @@ class Dungeon:
         row, col = self.find_hero()
 
         if direction == 'up':
-            if row == 0 or self.level_map[row - 1][col] == '#':
+            if row == 0 or self.level_map[row - 1][col] == Dungeon.OBSTACLE:
                 return False
             else:
-                self.level_map[row - 1][col] = 'H'
+                self.level_map[row - 1][col] = Dungeon.HERO
         elif direction == 'left':
-            if col == 0 or self.level_map[row][col - 1] == '#':
+            if col == 0 or self.level_map[row][col - 1] == Dungeon.OBSTACLE:
                 return False
             else:
-                self.level_map[row][col - 1] = 'H'
+                self.level_map[row][col - 1] = Dungeon.HERO
         elif direction == 'right':
-            if col == len(self.level_map[0]) - 1 or self.level_map[row][col + 1] == '#':
+            if col == len(self.level_map[0]) - 1 or self.level_map[row][col + 1] == Dungeon.OBSTACLE:
                 return False
             else:
-                self.level_map[row][col + 1] = 'H'
+                self.level_map[row][col + 1] = Dungeon.HERO
         else:
-            if row == len(self.level_map) - 1 or self.level_map[row + 1][col] == '#':
+            if row == len(self.level_map) - 1 or self.level_map[row + 1][col] == Dungeon.OBSTACLE:
                 return False
             else:
-                self.level_map[row + 1][col] = 'H'
+                self.level_map[row + 1][col] = Dungeon.HERO
 
-        self.level_map[row][col] = '.'
+        self.level_map[row][col] = Dungeon.WALKABLE_PATH
         return True
 
     def find_hero(self):
@@ -138,9 +138,9 @@ class Dungeon:
 
         rows = len(level_map)
         for row in range(rows):
-            if 'H' in level_map[row]:
+            if Dungeon.HERO in level_map[row]:
                 for col in range(len(level_map[row])):
-                    if level_map[row][col] == 'H':
+                    if level_map[row][col] == Dungeon.HERO:
                         return (row, col)
         return None
 
