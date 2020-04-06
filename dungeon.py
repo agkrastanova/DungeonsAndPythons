@@ -154,3 +154,20 @@ class Dungeon:
 
     def hero_attack(by):
         pass
+
+
+class Fight:
+    def __init__(self, hero, enemy, by=None):
+        if type(hero) is not Hero or type(enemy) is not Enemy:
+            raise TypeError('Invalid type.')
+        self.hero = hero
+        self.enemy = enemy
+        self.by = by
+
+        print(f'A fight is started between out Hero(health: {hero.health},',
+              f' mana: {hero.mana}) and Enemy(health: {enemy.health},',
+              f' mana: {enemy.mana}, damage: {enemy.damage}')
+
+    def fight(self):
+        while self.hero.is_alive() and self.enemy.is_alive():
+            pass
