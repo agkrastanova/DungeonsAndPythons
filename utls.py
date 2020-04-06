@@ -10,7 +10,9 @@ class Mixin:
         return alive > 0
 
     def can_cast(self):
-        return Mixin.get_mana(self) > 0
+        if self.spell is not None:
+            return Mixin.get_mana(self) >= self.spell.mana_cost
+        return False
 
     def take_damage(self, damage_points):
         self.health -= damage_points

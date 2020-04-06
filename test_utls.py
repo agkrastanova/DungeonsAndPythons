@@ -21,6 +21,9 @@ class TestMixinClass(unittest.TestCase):
 
     def test_can_cast_function_should_return_true_if_object_can_cast(self):
         h = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+        s = Spell(name='Fireball', damage=20, mana_cost=20, cast_range=2)
+
+        h.learn(s)
 
         result = Mixin.can_cast(h)
 

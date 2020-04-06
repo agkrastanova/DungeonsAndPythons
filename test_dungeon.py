@@ -297,6 +297,15 @@ class TestFightClass(unittest.TestCase):
 
         self.assertEqual((hero, enemy), (fight.hero, fight.enemy))
 
+    def test_if_spawn_function_populates_first_spawning_point_correctly(self):
+        level_map = Dungeon('level1.txt')
+
+        h = Hero(name='Bron', title='Dragonslayer', health=100, mana=100, mana_regeneration_rate=2)
+
+        result = level_map.spawn(h)
+
+        self.assertTrue(result)
+
 
 if __name__ == '__main__':
     unittest.main()

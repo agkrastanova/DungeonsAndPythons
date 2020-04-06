@@ -161,6 +161,7 @@ class Dungeon:
 
         self.level_map[row][col] = Dungeon.WALKABLE_PATH
         self.enemy.health = 100
+
         return True
 
     @staticmethod
@@ -337,3 +338,4 @@ class Fight:
                         self.level_map[row][col + i - 1] = Dungeon.ENEMY
                     else:
                         self.where = 'here'
+
