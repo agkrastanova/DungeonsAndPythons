@@ -107,6 +107,7 @@ class Dungeon:
             for index, element in enumerate(line):
                 if element == Dungeon.START:
                     line[index] = Dungeon.HERO
+                    self.hero = hero
                     return True
 
         return False
@@ -115,27 +116,35 @@ class Dungeon:
         row, col = self.find_hero()
 
         if direction == 'up':
-            if row == 0 or self.level_map[row - 1][col] == '#':
+            if row == 0 or self.level_map[row - 1][col] == Dungeon.OBSTACLE:
                 return False
             else:
-                self.level_map[row - 1][col] = 'H'
+                if self.level_map[row - 1][col] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy)
+                self.level_map[row - 1][col] = Dungeon.HERO
         elif direction == 'left':
-            if col == 0 or self.level_map[row][col - 1] == '#':
+            if col == 0 or self.level_map[row][col - 1] == Dungeon.OBSTACLE:
                 return False
             else:
-                self.level_map[row][col - 1] = 'H'
+                if self.level_map[row - 1][col] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy)
+                self.level_map[row][col - 1] = Dungeon.HERO
         elif direction == 'right':
-            if col == len(self.level_map[0]) - 1 or self.level_map[row][col + 1] == '#':
+            if col == len(self.level_map[0]) - 1 or self.level_map[row][col + 1] == Dungeon.OBSTACLE:
                 return False
             else:
-                self.level_map[row][col + 1] = 'H'
+                if self.level_map[row - 1][col] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy)
+                self.level_map[row][col + 1] = Dungeon.HERO
         else:
-            if row == len(self.level_map) - 1 or self.level_map[row + 1][col] == '#':
+            if row == len(self.level_map) - 1 or self.level_map[row + 1][col] == Dungeon.OBSTACLE:
                 return False
             else:
-                self.level_map[row + 1][col] = 'H'
+                if self.level_map[row - 1][col] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy)
+                self.level_map[row + 1][col] = Dungeon.HERO
 
-        self.level_map[row][col] = '.'
+        self.level_map[row][col] = Dungeon.WALKABLE_PATH
         return True
 
     def find_hero(self):
