@@ -5,4 +5,10 @@ S.##.....T
 ###T#####G
 /////
 weapon;The Axe of Destiny;20
+weapon;The Axe of Destiny;20
 spell;Fireball;20;50;2
+spell;Fireball;20;50;2
+health;100
+health;100
+mana;100
+weapon;Sword of Eden;50

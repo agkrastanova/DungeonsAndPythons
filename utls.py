@@ -74,9 +74,11 @@ class Weapon:
         self.name = name
         self.damage = damage
 
+    def __str__(self):
+        return f'{self.name}, damage: {self.damage}'
 
-class Spell():
 
+class Spell:
     def __init__(self, name, damage, mana_cost, cast_range):
         self.validate_spell_arguments(name, damage, mana_cost, cast_range)
 
@@ -84,6 +86,9 @@ class Spell():
         self.damage = damage
         self.mana_cost = mana_cost
         self.cast_range = cast_range
+
+    def __str__(self):
+        return f'{self.name}, damage: {self.damage}, mana cost: {self.mana_cost}, cast range: {self.cast_range}'
 
     @staticmethod
     def validate_spell_arguments(name, damage, mana_cost, cast_range):
