@@ -3,3 +3,6 @@ S.##.....T
 #.###E###E
 #.E...###.
 ###T#####G
+/////
+weapon;The Axe of Destiny;20
+spell;Fireball;20;50;2

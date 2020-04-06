@@ -72,10 +72,21 @@ class Dungeon:
 
     def __init__(self, level1):
         with open(level1) as f:
-            line = f.read().split('\n')
-            level_map = [list(l) for l in line if l.strip() != '']
+            lines = f.read()
+            level_lines = lines.split('/////')[0]
+            level_lines = level_lines.split('\n')
+
+            treasure_lines = lines.split('/////')[1]
+            treasure_lines = treasure_lines.split('\n')
+
+            level_map = [list(l) for l in level_lines if l.strip() != '']
+
+            treasures = treasure_lines
+            treasures.pop(0)
+            treasures.pop(-1)
 
         self.level_map = level_map
+        self.treasures = treasures
 
     def __str__(self):
         level = ''
@@ -92,33 +103,48 @@ class Dungeon:
         print(self.__str__())
 
     def spawn(self, hero):
-        pass
+        for line in self.level_map:
+            for index, element in enumerate(line):
+                if element == Dungeon.START:
+                    line[index] = Dungeon.HERO
+                    self.hero = hero
+                    return True
+
+        return False
 
     def move_hero(self, direction):
         row, col = self.find_hero()
 
         if direction == 'up':
-            if row == 0 or self.level_map[row - 1][col] == '#':
+            if row == 0 or self.level_map[row - 1][col] == Dungeon.OBSTACLE:
                 return False
             else:
-                self.level_map[row - 1][col] = 'H'
+                if self.level_map[row - 1][col] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy)
+                self.level_map[row - 1][col] = Dungeon.HERO
         elif direction == 'left':
-            if col == 0 or self.level_map[row][col - 1] == '#':
+            if col == 0 or self.level_map[row][col - 1] == Dungeon.OBSTACLE:
                 return False
             else:
-                self.level_map[row][col - 1] = 'H'
+                if self.level_map[row - 1][col] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy)
+                self.level_map[row][col - 1] = Dungeon.HERO
         elif direction == 'right':
-            if col == len(self.level_map[0]) - 1 or self.level_map[row][col + 1] == '#':
+            if col == len(self.level_map[0]) - 1 or self.level_map[row][col + 1] == Dungeon.OBSTACLE:
                 return False
             else:
-                self.level_map[row][col + 1] = 'H'
+                if self.level_map[row - 1][col] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy)
+                self.level_map[row][col + 1] = Dungeon.HERO
         else:
-            if row == len(self.level_map) - 1 or self.level_map[row + 1][col] == '#':
+            if row == len(self.level_map) - 1 or self.level_map[row + 1][col] == Dungeon.OBSTACLE:
                 return False
             else:
-                self.level_map[row + 1][col] = 'H'
+                if self.level_map[row - 1][col] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy)
+                self.level_map[row + 1][col] = Dungeon.HERO
 
-        self.level_map[row][col] = '.'
+        self.level_map[row][col] = Dungeon.WALKABLE_PATH
         return True
 
     def find_hero(self):
@@ -137,3 +163,20 @@ class Dungeon:
 
     def hero_attack(by):
         pass
+
+
+class Fight:
+    def __init__(self, hero, enemy, by=None):
+        if type(hero) is not Hero or type(enemy) is not Enemy:
+            raise TypeError('Invalid type.')
+        self.hero = hero
+        self.enemy = enemy
+        self.by = by
+
+        print(f'A fight is started between out Hero(health: {hero.health},',
+              f' mana: {hero.mana}) and Enemy(health: {enemy.health},',
+              f' mana: {enemy.mana}, damage: {enemy.damage}')
+
+    def fight(self):
+        while self.hero.is_alive() and self.enemy.is_alive():
+            pass
