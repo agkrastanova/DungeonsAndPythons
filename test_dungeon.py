@@ -217,6 +217,31 @@ class TestEnemyClass(unittest.TestCase):
         self.assertIsNotNone(exc)
         self.assertEqual(str(exc), 'Damage should be positive integer')
 
+    def test_hero_attack_by_spell_returns_false_if_no_fight(self):
+        hero = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+        map = Dungeon('level1.txt')
+        map.spawn(hero)
+        spell = Spell('fireball', 20, 20, 2)
+        hero.spell = spell
+
+        result = map.hero_attack(by='spell')
+
+        self.assertEqual(result, False)
+
+    def test_hero_attack_by_spell_returns_true_if_fight_starts(self):
+        hero = Hero(name="Bron", title="Dragonslayer", health=100, mana=100, mana_regeneration_rate=2)
+        map = Dungeon('level1.txt')
+        map.spawn(hero)
+        spell = Spell('fireball', 20, 20, 2)
+        hero.spell = spell
+        map.move_hero('right')
+        map.move_hero('down')
+        map.move_hero('down')
+        map.move_hero('down')
+
+        result = map.hero_attack(by='spell')
+
+        self.assertEqual(result, True)
 
 
 class TestFightClass(unittest.TestCase):

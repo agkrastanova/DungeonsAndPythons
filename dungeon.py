@@ -184,7 +184,42 @@ class Dungeon:
     def hero_attack(self, by):
         if by == 'spell':
             row, col = self.find_hero()
-            pass
+            # UP
+            if row != 0 and self.level_map[row - 1][col] != Dungeon.OBSTACLE:
+                for i in range(self.hero.spell.cast_range):
+                    if row - i == -1 or self.level_map[row - i][col] == Dungeon.OBSTACLE:
+                        break
+                    if self.level_map[row - i][col] == Dungeon.ENEMY:
+                        Fight(self.hero, self.enemy, by='spell')
+                        return True
+            # LEFT
+            if col != 0 and self.level_map[row][col - 1] != Dungeon.OBSTACLE:
+                for i in range(self.hero.spell.cast_range):
+                    if col - i == -1 or self.level_map[row][col - i] == Dungeon.OBSTACLE:
+                        break
+                    if self.level_map[row][col - i] == Dungeon.ENEMY:
+                        Fight(self.hero, self.enemy, by='spell')
+                        return True
+            # Down
+            if row != len(self.level_map[row]) - 1 and self.level_map[row + 1][col] != Dungeon.OBSTACLE:
+                row_len = len(self.level_map[row])
+                for i in range(self.hero.spell.cast_range):
+                    if row + i == row_len or self.level_map[row + i][col] == Dungeon.OBSTACLE:
+                        break
+                    if self.level_map[row + i][col] == Dungeon.ENEMY:
+                        Fight(self.hero, self.enemy, by='spell')
+                        return True
+            # RIGHT
+            if col != len(self.level_map) - 1 and self.level_map[row][col + 1] != Dungeon.OBSTACLE:
+                col_len = len(self.level_map)
+                for i in range(self.hero.spell.cast_range):
+                    if col + i == col_len or self.level_map[row][col + i] == Dungeon.OBSTACLE:
+                        break
+                    if self.level_map[row][col + i] == Dungeon.ENEMY:
+                        Fight(self.hero, self.enemy, by='spell')
+                        return True
+
+        return False
 
 
 class Fight:
