@@ -124,34 +124,43 @@ class Dungeon:
             else:
                 self.hero.take_mana(self.hero.mana_regeneration_rate)
                 if self.level_map[row - 1][col] == Dungeon.ENEMY:
-                    Fight(self.hero, self.enemy)
+                    Fight(self.hero, self.enemy, level_map=self.level_map)
+                elif self.level_map[row - 1][col] == Dungeon.TREASURE:
+                    self.pick_treasure()
                 self.level_map[row - 1][col] = Dungeon.HERO
         elif direction == 'left':
             if col == 0 or self.level_map[row][col - 1] == Dungeon.OBSTACLE:
                 return False
             else:
                 self.hero.take_mana(self.hero.mana_regeneration_rate)
-                if self.level_map[row - 1][col] == Dungeon.ENEMY:
-                    Fight(self.hero, self.enemy)
+                if self.level_map[row][col - 1] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy, level_map=self.level_map)
+                elif self.level_map[row][col - 1] == Dungeon.TREASURE:
+                    self.pick_treasure()
                 self.level_map[row][col - 1] = Dungeon.HERO
         elif direction == 'right':
             if col == len(self.level_map[0]) - 1 or self.level_map[row][col + 1] == Dungeon.OBSTACLE:
                 return False
             else:
                 self.hero.take_mana(self.hero.mana_regeneration_rate)
-                if self.level_map[row - 1][col] == Dungeon.ENEMY:
-                    Fight(self.hero, self.enemy)
+                if self.level_map[row][col + 1] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy, level_map=self.level_map)
+                elif self.level_map[row][col + 1] == Dungeon.TREASURE:
+                    self.pick_treasure()
                 self.level_map[row][col + 1] = Dungeon.HERO
         else:
             if row == len(self.level_map) - 1 or self.level_map[row + 1][col] == Dungeon.OBSTACLE:
                 return False
             else:
                 self.hero.take_mana(self.hero.mana_regeneration_rate)
-                if self.level_map[row - 1][col] == Dungeon.ENEMY:
-                    Fight(self.hero, self.enemy)
+                if self.level_map[row + 1][col] == Dungeon.ENEMY:
+                    Fight(self.hero, self.enemy, level_map=self.level_map)
+                elif self.level_map[row + 1][col] == Dungeon.TREASURE:
+                    self.pick_treasure()
                 self.level_map[row + 1][col] = Dungeon.HERO
 
         self.level_map[row][col] = Dungeon.WALKABLE_PATH
+        self.enemy.health = 100
         return True
 
     @staticmethod
@@ -187,6 +196,8 @@ class Dungeon:
 
     def hero_attack(self, by):
         if by == 'spell':
+            if self.hero.spell.mana_cost > self.hero.mana:
+                return False
             row, col = self.find_hero(self.level_map)
             # UP
             if row != 0 and self.level_map[row - 1][col] != Dungeon.OBSTACLE:
@@ -223,6 +234,7 @@ class Dungeon:
                         Fight(self.hero, self.enemy, level_map=self.level_map, by='spell', where="right")
                         return True
 
+            self.hero.take_mana(-self.hero.spell.mana_cost)
         return False
 
 
@@ -263,6 +275,7 @@ class Fight:
 
         if self.hero.is_alive():
             print("Enemy is dead!")
+            self.enemy.health = 100
         else:
             print("Hero is dead!")
 
