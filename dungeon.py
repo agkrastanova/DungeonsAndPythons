@@ -89,6 +89,7 @@ class Dungeon:
         self.treasures = treasures
 
         self.enemy = Enemy(health=100, mana=20, damage=20)
+        self.hero = Hero('hero', 'title', 100, 100, 2)
 
     def __str__(self):
         level = ''
@@ -115,12 +116,13 @@ class Dungeon:
         return False
 
     def move_hero(self, direction):
-        row, col = self.find_hero()
+        row, col = self.find_hero(self.level_map)
 
         if direction == 'up':
             if row == 0 or self.level_map[row - 1][col] == Dungeon.OBSTACLE:
                 return False
             else:
+                self.hero.take_mana(self.hero.mana_regeneration_rate)
                 if self.level_map[row - 1][col] == Dungeon.ENEMY:
                     Fight(self.hero, self.enemy)
                 self.level_map[row - 1][col] = Dungeon.HERO
@@ -128,6 +130,7 @@ class Dungeon:
             if col == 0 or self.level_map[row][col - 1] == Dungeon.OBSTACLE:
                 return False
             else:
+                self.hero.take_mana(self.hero.mana_regeneration_rate)
                 if self.level_map[row - 1][col] == Dungeon.ENEMY:
                     Fight(self.hero, self.enemy)
                 self.level_map[row][col - 1] = Dungeon.HERO
@@ -135,6 +138,7 @@ class Dungeon:
             if col == len(self.level_map[0]) - 1 or self.level_map[row][col + 1] == Dungeon.OBSTACLE:
                 return False
             else:
+                self.hero.take_mana(self.hero.mana_regeneration_rate)
                 if self.level_map[row - 1][col] == Dungeon.ENEMY:
                     Fight(self.hero, self.enemy)
                 self.level_map[row][col + 1] = Dungeon.HERO
@@ -142,6 +146,7 @@ class Dungeon:
             if row == len(self.level_map) - 1 or self.level_map[row + 1][col] == Dungeon.OBSTACLE:
                 return False
             else:
+                self.hero.take_mana(self.hero.mana_regeneration_rate)
                 if self.level_map[row - 1][col] == Dungeon.ENEMY:
                     Fight(self.hero, self.enemy)
                 self.level_map[row + 1][col] = Dungeon.HERO
@@ -149,9 +154,8 @@ class Dungeon:
         self.level_map[row][col] = Dungeon.WALKABLE_PATH
         return True
 
-    def find_hero(self):
-        level_map = self.level_map
-
+    @staticmethod
+    def find_hero(level_map):
         rows = len(level_map)
         for row in range(rows):
             if Dungeon.HERO in level_map[row]:
@@ -183,14 +187,14 @@ class Dungeon:
 
     def hero_attack(self, by):
         if by == 'spell':
-            row, col = self.find_hero()
+            row, col = self.find_hero(self.level_map)
             # UP
             if row != 0 and self.level_map[row - 1][col] != Dungeon.OBSTACLE:
                 for i in range(self.hero.spell.cast_range):
                     if row - i == -1 or self.level_map[row - i][col] == Dungeon.OBSTACLE:
                         break
                     if self.level_map[row - i][col] == Dungeon.ENEMY:
-                        Fight(self.hero, self.enemy, by='spell')
+                        Fight(self.hero, self.enemy, level_map=self.level_map, by='spell', where="up")
                         return True
             # LEFT
             if col != 0 and self.level_map[row][col - 1] != Dungeon.OBSTACLE:
@@ -198,7 +202,7 @@ class Dungeon:
                     if col - i == -1 or self.level_map[row][col - i] == Dungeon.OBSTACLE:
                         break
                     if self.level_map[row][col - i] == Dungeon.ENEMY:
-                        Fight(self.hero, self.enemy, by='spell')
+                        Fight(self.hero, self.enemy, level_map=self.level_map, by='spell', where="left")
                         return True
             # Down
             if row != len(self.level_map[row]) - 1 and self.level_map[row + 1][col] != Dungeon.OBSTACLE:
@@ -207,7 +211,7 @@ class Dungeon:
                     if row + i == row_len or self.level_map[row + i][col] == Dungeon.OBSTACLE:
                         break
                     if self.level_map[row + i][col] == Dungeon.ENEMY:
-                        Fight(self.hero, self.enemy, by='spell')
+                        Fight(self.hero, self.enemy, level_map=self.level_map, by='spell', where="down")
                         return True
             # RIGHT
             if col != len(self.level_map) - 1 and self.level_map[row][col + 1] != Dungeon.OBSTACLE:
@@ -216,23 +220,107 @@ class Dungeon:
                     if col + i == col_len or self.level_map[row][col + i] == Dungeon.OBSTACLE:
                         break
                     if self.level_map[row][col + i] == Dungeon.ENEMY:
-                        Fight(self.hero, self.enemy, by='spell')
+                        Fight(self.hero, self.enemy, level_map=self.level_map, by='spell', where="right")
                         return True
 
         return False
 
 
 class Fight:
-    def __init__(self, hero, enemy, by=None):
+    def __init__(self, hero, enemy, level_map, by=None, where="here"):
         if type(hero) is not Hero or type(enemy) is not Enemy:
             raise TypeError('Invalid type.')
         self.hero = hero
         self.enemy = enemy
         self.by = by
+        self.where = where
+        self.level_map = level_map
 
         print(f'A fight is started between out Hero(health: {hero.health},',
               f' mana: {hero.mana}) and Enemy(health: {enemy.health},',
               f' mana: {enemy.mana}, damage: {enemy.damage}')
 
-    def fight(self):
-        pass
+        self.br = 0
+
+        while self.hero.is_alive() and self.enemy.is_alive():
+            if self.where == "here":
+                self.fight_hero()
+                self.fight_enemy()
+            else:
+                if self.hero.mana > self.hero.spell.mana_cost:
+                    self.fight_hero()
+                else:
+                    print("Enemy is too far to be hit by Hero. Hero does not move.")
+
+                self.move_enemy()
+                enemy_moves = {
+                    'up': 'down',
+                    'down': 'up',
+                    'right': 'left',
+                    'left': 'right'
+                }
+                print(f"Enemy moves one square to the {enemy_moves[where]} to get to the hero. This is his move.")
+
+        if self.hero.is_alive():
+            print("Enemy is dead!")
+        else:
+            print("Hero is dead!")
+
+    def fight_hero(self):
+        if self.hero.weapon.damage > self.hero.spell.damage:
+            self.enemy.take_damage(self.hero.weapon.damage)
+            print(f"Hero hits with {self.hero.weapon.name} for {self.hero.weapon.damage} dmg. Enemy health is {self.enemy.health}")
+        elif self.hero.mana < self.hero.spell.mana_cost:
+            if self.br == 0:
+                self.br = 1
+                print(f"Hero does not have mana for another {self.hero.spell.name}.")
+            self.enemy.take_damage(self.hero.weapon.damage)
+            print(f"Hero hits with {self.hero.weapon.name} for {self.hero.weapon.damage} dmg. Enemy health is {self.enemy.health}")
+        else:
+            self.enemy.take_damage(self.hero.spell.damage)
+            print(f"Hero casts a {self.hero.spell.name}, hits enemy for {self.hero.spell.damage} dmg. Enemy health is {self.enemy.health}")
+            self.hero.take_mana(-self.hero.spell.mana_cost)
+
+    def fight_enemy(self):
+        if self.enemy.is_alive():
+            self.hero.take_damage(self.enemy.damage)
+            print(f"Enemy hits hero for {self.enemy.damage} dmg. Hero health is {self.hero.health}.")
+
+    def move_enemy(self):
+        row, col = Dungeon.find_hero(self.level_map)
+
+        if self.where == 'up':
+            for i in range(self.hero.spell.cast_range):
+                if self.level_map[row - i][col] == Dungeon.ENEMY:
+                    self.level_map[row - i][col] = self.WALKABLE_PATH
+                    if i != 1:
+                        self.level_map[row - i + 1][col] == Dungeon.ENEMY
+                    else:
+                        self.where = 'here'
+
+        elif self.where == 'left':
+            for i in range(self.hero.spell.cast_range):
+                if self.level_map[row][col - i] == Dungeon.ENEMY:
+                    self.level_map[row][col - i] = Dungeon.WALKABLE_PATH
+                    if i != 1:
+                        self.level_map[row][col - i + 1] = Dungeon.ENEMY
+                    else:
+                        self.where = 'here'
+
+        elif self.where == 'down':
+            for i in range(self.hero.spell.cast_range):
+                if self.level_map[row + i][col] == Dungeon.ENEMY:
+                    self.level_map[row + i][col] = Dungeon.WALKABLE_PATH
+                    if i != 1:
+                        self.level_map[row + i - 1] = Dungeon.ENEMY
+                    else:
+                        self.where = 'here'
+
+        else:
+            for i in range(self.hero.spell.cast_range):
+                if self.level_map[row][col + i] == Dungeon.ENEMY:
+                    self.level_map[row][col + i] = Dungeon.WALKABLE_PATH
+                    if i != 1:
+                        self.level_map[row][col + i - 1] = Dungeon.ENEMY
+                    else:
+                        self.where = 'here'
